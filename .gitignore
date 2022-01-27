@@ -1,3 +1,6 @@
 __pycache__
 .cache
 .env
+
+original.txt
+sorted.txt
