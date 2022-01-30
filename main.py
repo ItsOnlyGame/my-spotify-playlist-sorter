@@ -40,7 +40,7 @@ def sort_playlist():
     data = {};
     for item in playlist_tracks:
         album_name = item['track']['album']['name']
-        artist_name = item['track']['artists'][0]['name']
+        artist_name = item['track']['album']['artists'][0]['name']
 
         if not artist_name in data.keys():
             data[artist_name] = {};
@@ -143,12 +143,17 @@ if __name__ == '__main__':
     while True:
         print('#######')
         print('What do you want to do?')
-        print('0: Sort playlist')
-        print('1: Duplicate playlist')
+        print('0: Exit')
+        print('1: Sort playlist')
+        print('2: Duplicate playlist')
         print('#######\n')
         option = input('Which option?\n')
 
         if option == '0':
+            
+            break
+
+        elif option == '1':
             print("You need to create a developer application in the Spotify Developer Panel \nhttps://developer.spotify.com/")
             print("----------------------------------------------------------------------------------------------------------")
             playlist_url = input('Give playlist url: \n')
@@ -158,7 +163,7 @@ if __name__ == '__main__':
             
             break
 
-        if option == '1':
+        elif option == '2':
             print("You need to create a developer application in the Spotify Developer Panel \nhttps://developer.spotify.com/")
             print("----------------------------------------------------------------------------------------------------------")
             playlist_url = input('Give playlist url that you want to copy: \n')
