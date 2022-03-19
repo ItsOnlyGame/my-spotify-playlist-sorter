@@ -2,6 +2,11 @@
 This script sorts your spotify playlist.  
 
 Sorting of the playlist follows these rules:
-1. Playlist gets sorted in artists, they are sorted with the date added to the playlist
-2. Every artists song will get sorted with it's albums based on release date
-3. Album tracks will be sorted on the order that they should be if they were in the actual album. 
+1. Tracks are sorted into groups of albums, that are ordered in the manner of the album.
+2. Albums are grouped by artist and release date. (Artist is determined from the album rather than the track)
+3. Artist groups are sorted depending on the first tracks appeatance date on the playlist.
+
+## Automation
+This repo contains [automation python example](example_automated.py).
+This file can be used to automate the main script process.
+Every argument in the automation file answers to input required by the main file.

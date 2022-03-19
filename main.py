@@ -1,10 +1,10 @@
 import spotipy
-import os
-from dotenv import load_dotenv
-import time
 import numpy as np
+from dotenv import load_dotenv
+import os
+import time
 import math
-from datetime import datetime
+import sys
 
 ##  Fetch spotify playlist tracks into an array
 def getPlaylistItems():
@@ -129,6 +129,7 @@ def execute():
 
 if __name__ == '__main__':
     load_dotenv()
+    requireInput = len(sys.argv) == 1
 
     if not os.getenv('SPOTIPY_CLIENT_ID'):
         os.environ['SPOTIPY_CLIENT_ID'] = input('Spotify client id: \n')
@@ -147,17 +148,23 @@ if __name__ == '__main__':
         print('1: Sort playlist')
         print('2: Duplicate playlist')
         print('#######\n')
-        option = input('Which option?\n')
+
+        if requireInput == False:
+            option = sys.argv[1]
+        else:
+            option = input('Which option?\n')
 
         if option == '0':
-            
             break
 
         elif option == '1':
             print("You need to create a developer application in the Spotify Developer Panel \nhttps://developer.spotify.com/")
             print("----------------------------------------------------------------------------------------------------------")
-            playlist_url = input('Give playlist url: \n')
-
+            
+            if requireInput == False:
+                playlist_url = sys.argv[2]
+            else:
+                playlist_url = input('Give playlist url: \n')
             
             execute()
             
@@ -166,9 +173,14 @@ if __name__ == '__main__':
         elif option == '2':
             print("You need to create a developer application in the Spotify Developer Panel \nhttps://developer.spotify.com/")
             print("----------------------------------------------------------------------------------------------------------")
-            playlist_url = input('Give playlist url that you want to copy: \n')
-            print('')
-            new_playlist_name = input('New playlist name: \n')
+
+            if requireInput == False:
+                playlist_url = sys.argv[2]
+                new_playlist_name = sys.argv[3]
+            else:
+                playlist_url = input('Give playlist url that you want to copy: \n')
+                print('')
+                new_playlist_name = input('New playlist name: \n')
 
             print('')
             
