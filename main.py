@@ -7,7 +7,7 @@ import math
 import sys
 
 ##  Fetch spotify playlist tracks into an array
-def getPlaylistItems():
+def getPlaylistItems() -> list:
     offset = 0
     items = []
 
@@ -33,6 +33,9 @@ def sort_playlist():
     playlist_tracks = getPlaylistItems()
 
     for track in playlist_tracks:
+        if track['track']['album']['release_date'] == None:
+            track['track']['album']['release_date'] = '2000-01-01'
+
         if len(track['track']['album']['release_date'].split('-')) == 1:
             track['track']['album']['release_date'] = track['track']['album']['release_date']+'-01-01'
 
@@ -40,7 +43,10 @@ def sort_playlist():
     data = {};
     for item in playlist_tracks:
         album_name = item['track']['album']['name']
-        artist_name = item['track']['album']['artists'][0]['name']
+        if item['is_local'] == True:
+            artist_name = item['track']['artists'][0]['name']
+        else:
+            artist_name = item['track']['album']['artists'][0]['name']
 
         if not artist_name in data.keys():
             data[artist_name] = {};
@@ -51,6 +57,12 @@ def sort_playlist():
     for artist_name in data.keys():
         temp = []
         for album_name in data[artist_name].keys():
+            # Handle local files
+            if data[artist_name][album_name][0]['track']['is_local'] == True:
+                temp += list(data[artist_name][album_name]).copy()
+                continue
+            
+            # Sort album according to the actual album
             album_tracks = sp.album_tracks(data[artist_name][album_name][0]['track']['album']['id'])['items']
 
             other = list(data[artist_name][album_name]).copy()
@@ -94,37 +106,26 @@ def execute():
     snapshot = None
 
     print("Sorting playlist. This might take a while depending on the size of your playlist")
-    iteration = 1
-    while True:
-        playlist = getPlaylistItems()
-        sorted = True
+    playlist = getPlaylistItems()
 
-        print("Running the "+str(iteration)+" iteration.")
+    for j in range(0, len(sorted_list)-1):
+        if playlist[j]['track']['uri'] != sorted_list[j]['track']['uri']:
+            for i, t1 in enumerate(playlist):
+                if t1['track']['uri'] == sorted_list[j]['track']['uri']:
 
-        for j in range(0, len(sorted_list)-1):
-            if playlist[j]['track']['uri'] != sorted_list[j]['track']['uri']:
-                print(playlist[j]['track']['name'])
-                print(sorted_list[j]['track']['name'])
-                print('###')
-                sorted = False
-                for i, t1 in enumerate(sorted_list):
-                    if t1['track']['uri'] == playlist[j]['track']['uri']:
-                        if snapshot == None:
-                            response = sp.playlist_reorder_items(playlist_url, range_start=j, insert_before=i+1)
-                            snapshot = response['snapshot_id']
+                    if snapshot == None:
+                        response = sp.playlist_reorder_items(playlist_url, range_start=i, insert_before=j)
+                        snapshot = response['snapshot_id']
 
-                            playlist.insert(i, playlist.pop(j))
+                        playlist.insert(j, playlist.pop(i))
 
-                        else:
-                            response = sp.playlist_reorder_items(playlist_url, range_start=j, insert_before=i+1, snapshot_id=snapshot)
-                            snapshot = response['snapshot_id']
+                    else:
+                        response = sp.playlist_reorder_items(playlist_url, range_start=i, insert_before=j, snapshot_id=snapshot)
+                        snapshot = response['snapshot_id']
 
-                            playlist.insert(i, playlist.pop(j))
-                        break
+                        playlist.insert(j, playlist.pop(i))
+                    break
 
-        iteration += 1
-        if sorted: 
-            break
                 
 
 if __name__ == '__main__':
@@ -188,7 +189,8 @@ if __name__ == '__main__':
             print('New playlist created with the name:', new_playlist_name, '\n')
 
             playlistItems = getPlaylistItems();
-            items = list(map(lambda item: item['track']['uri'], playlistItems));
+            filteredPlaylistItems = filter(lambda item: item['is_local'] == False, playlistItems)
+            items = list(map(lambda item: item['track']['uri'], filteredPlaylistItems));
 
             arrays = np.array_split(items, math.ceil(len(items)/100))
             for array in arrays:
