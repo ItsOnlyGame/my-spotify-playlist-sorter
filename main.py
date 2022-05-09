@@ -85,18 +85,16 @@ def sort_playlist():
     return sorted_playlist
 
 
-# https://open.spotify.com/playlist/60xD9HqNbgojJpeCLiUNJX?si=208e5d5e8c39474e
-
-
-def execute():
+# This executes the sorting of the playlist and commits the action to the playlist in spotify
+def execute_sort():
     # Fetch playlist to list 
-    print('Feching tracks from playlist...')
+    print('Feching tracks from playlist... ')
     original = getPlaylistItems()
     with open('original.txt', mode='w', encoding='utf-8') as f:
         for item in original:
             f.write(item['track']['name']+'\n')
 
-    print('Sorting playlist')
+    print('Sorting playlist. ')
     sorted_list = sort_playlist()
     with open('sorted.txt', mode='w', encoding='utf-8') as f:
         for item in sorted_list:
@@ -105,7 +103,7 @@ def execute():
 
     snapshot = None
 
-    print("Sorting playlist. This might take a while depending on the size of your playlist")
+    print('Applying change to playlist. ')
     playlist = getPlaylistItems()
 
     for j in range(0, len(sorted_list)-1):
@@ -127,8 +125,9 @@ def execute():
                     break
 
                 
-
 if __name__ == '__main__':
+    # Find env file containing the spotify client id and secret
+    # If they are not found ask the user for the variables
     load_dotenv()
     requireInput = len(sys.argv) == 1
 
@@ -141,7 +140,6 @@ if __name__ == '__main__':
     token = spotipy.util.prompt_for_user_token(None, scope='playlist-modify-private,playlist-modify-public', client_id=os.getenv('SPOTIPY_CLIENT_ID'), client_secret=os.getenv('SPOTIPY_CLIENT_SECRET'), redirect_uri='http://localhost:8080') 
     sp = spotipy.Spotify(auth=token)
 
-
     while True:
         print('#######')
         print('What do you want to do?')
@@ -150,15 +148,18 @@ if __name__ == '__main__':
         print('2: Duplicate playlist')
         print('#######\n')
 
+        # Check for a automated response for this user action
         if requireInput == False:
             option = sys.argv[1]
         else:
             option = input('Which option?\n')
 
-        if option == '0':
+
+
+        if option == '0': # Exit
             break
 
-        elif option == '1':
+        elif option == '1': # Sort playlist
             print("You need to create a developer application in the Spotify Developer Panel \nhttps://developer.spotify.com/")
             print("----------------------------------------------------------------------------------------------------------")
             
@@ -167,11 +168,11 @@ if __name__ == '__main__':
             else:
                 playlist_url = input('Give playlist url: \n')
             
-            execute()
+            execute_sort()
             
             break
 
-        elif option == '2':
+        elif option == '2': # Duplicate playlist
             print("You need to create a developer application in the Spotify Developer Panel \nhttps://developer.spotify.com/")
             print("----------------------------------------------------------------------------------------------------------")
 
@@ -197,7 +198,7 @@ if __name__ == '__main__':
                 sp.playlist_add_items(new_playlist['id'], array)
 
             break
-        else:
+        else: # Invalid
             print('Invalid option. Retry!\n\n')
 
     print('Finished!') 
