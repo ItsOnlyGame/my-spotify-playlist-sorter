@@ -45,6 +45,10 @@ def sort_playlist():
         album_name = item['track']['album']['name']
         if item['is_local'] == True:
             artist_name = item['track']['artists'][0]['name']
+        elif item['track']['album']['album_type'] == 'compilation':
+            artist_name = item['track']['album']['name']
+        elif item['track']['album']['artists'][0]['name'] == 'Various Artists':
+            artist_name = item['track']['artists'][0]['name']
         else:
             artist_name = item['track']['album']['artists'][0]['name']
 
