@@ -11,6 +11,19 @@ This repo contains [automation python example](example_automated.py).
 This file can be used to automate the main script process.
 Every argument in the automation file answers to input required by the main file.
 
+To automate this process, you may use any utility that you seem fit.
+The script has arguments that can so that it can automatically sort a playlist.
+
+```
+python3 ./main.py -sort 'playlist url here'
+```
+
+It executes the sorting with console output. 
+Recommended tools for the automation proccess is pm2, mostly used on node applications but can also be used to run python scripts.
+
+For some guidance on how to use pm2 with python, see [this link](https://pm2.io/blog/2018/09/19/Manage-Python-Processes)
+
+
 ## How to use
 ### Requirements
 - Spotify API credentials (SPOTIPY_CLIENT_ID and SPOTIPY_CLIENT_SECRET)
@@ -28,6 +41,10 @@ SPOTIPY_CLIENT_SECRET=Insert client secret here
 Now you can start the script by running 
 ```
 python3 ./main.py
+```
+or 
+```
+python ./main.py
 ```
 
 After that follow the script instuctions.
