@@ -118,8 +118,8 @@ class Sorter(threading.Thread):
                 temp += other
 
             def sort_by_date(item):
-                if int(track['track']['album']['release_date'].split('-')[0]) < 2000:
-                    track['track']['album']['release_date'] = '2000-01-01'
+                if int(item['track']['album']['release_date'].split('-')[0]) < 2000:
+                    item['track']['album']['release_date'] = '2000-01-01'
 
                 return time.mktime(time.strptime(item['track']['album']['release_date'], '%Y-%m-%d'))
 
