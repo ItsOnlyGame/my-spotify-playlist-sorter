@@ -44,25 +44,10 @@ class App(threading.Thread):
         value = input('>>> ')
         if value == "1":
             self.render_sort_menu()
-            pass
         elif value == "2":
-
-            print("\nURL of playlist to duplicate")
-            playlist_url = input(">> ")
-
-            print("\nPlaylists name (empty for identical name)")
-            new_playlist_name = input(">> ")
-            if new_playlist_name == "":
-                new_playlist_name = None
-
-            duplicator = Duplicator(self.spotify, new_playlist_name, playlist_url)
-
-            while not duplicator.done:
-                time.sleep(1)
-
+            self.render_duplication_menu()
         elif value == "0":
             self.current_menu = "EXIT"
-            pass
         else:
             self.render_main_menu(True)
 
@@ -116,6 +101,43 @@ class App(threading.Thread):
             self.render_main_menu()
         else:
             self.render_sort_menu(True)
+
+    def render_duplication_menu(self, invalid_input=False):
+        util.clear()
+        tprint("Spotify  Playlist  Duplicator")
+        if invalid_input:
+            print("Invalid input!\n")
+        print("")
+
+        print("\nURL of playlist to duplicate")
+        duplication_playlist_url = input(">> ")
+
+        print("\nPlaylists name (empty for identical name)")
+        new_playlist_name = input(">> ")
+        if new_playlist_name == "":
+            new_playlist_name = None
+
+        valid_input = False
+        duplicate_is_public = True
+        while not valid_input:
+            print("\nMake playlist public (it doesn't matter because the Spotify API is broken) [y/N]")
+            duplicate_is_public_input = input(">> ").lower()
+            print(duplicate_is_public_input)
+
+            if duplicate_is_public_input == "n" or duplicate_is_public_input == "":
+                duplicate_is_public = False
+                valid_input = True
+            elif duplicate_is_public_input == "y":
+                duplicate_is_public = True
+                valid_input = True
+
+        duplicator = Duplicator(self.spotify, new_playlist_name, duplication_playlist_url, duplicate_is_public)
+
+        while not duplicator.done:
+            time.sleep(1)
+
+        self.current_menu = "MainMenu"
+        self.render_main_menu()
 
     def set_spotify(self):
         if self.spotify is not None:

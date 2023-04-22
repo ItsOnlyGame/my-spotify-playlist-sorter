@@ -8,7 +8,9 @@ def get_user_token() -> spotipy.Spotify:
         "playlist-modify-private",
         "playlist-modify-public",
         "playlist-read-private",
-        "user-library-read"
+        "playlist-read-collaborative",
+        "user-library-read",
+        "user-library-modify"
     ]
     scope_string = ','.join(scopes)
 

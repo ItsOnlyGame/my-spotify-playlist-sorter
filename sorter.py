@@ -52,13 +52,14 @@ class Sorter(threading.Thread):
         print_progress("Fetching all tracks", 100)
         return track_items
 
+    """
     #### Sorts the spotify playlist ####
     ##
     ## 1. Artist added to playlist
     ## 2. Album release date
     ## 2. Replicates the album order found in the original album
     ##
-    #####
+    """
     def sort_playlist(self, playlist_tracks):
         print_progress("Sorting playlist - Apply date fixed", 0, True)
 
@@ -70,7 +71,7 @@ class Sorter(threading.Thread):
 
             # Add month and date if those do not exist
             if len(track['track']['album']['release_date'].split('-')) == 1:
-                track['track']['album']['release_date'] = track['track']['album']['release_date'] + '-01-01'
+                track['track']['album']['release_date'] += '-01-01'
 
             if index % 10 == 0:
                 print_progress("Sorting playlist", (index // len(playlist_tracks)) * 25)
@@ -80,9 +81,6 @@ class Sorter(threading.Thread):
         sorted_playlist = {}
         for index, item in enumerate(playlist_tracks):
             album_key = item['track']['album']['name']
-
-            # By default, use tracks album artist as a key
-            artist_key = item['track']['album']['artists'][0]['name']
 
             # If track is a local track, use tracks artist as a key
             if item['is_local'] is True:
@@ -95,6 +93,13 @@ class Sorter(threading.Thread):
             # If track album artist is named "Various Artists", use the first artist named in the track
             elif item['track']['album']['artists'][0]['name'] == 'Various Artists':
                 artist_key = item['track']['artists'][0]['name']
+
+            # If no edge cases are detected, use tracks album artist as a key
+            else:
+                artist_key = item['track']['album']['artists'][0]['name']
+
+            if artist_key is None:
+                raise Exception("artist_key is None, which should no be possible.")
 
             # Initialize dictionary based on playlist track data
             if artist_key not in sorted_playlist.keys():
@@ -140,7 +145,7 @@ class Sorter(threading.Thread):
 
             if index % 10 == 0:
                 print_progress("Sorting playlist - Sort playlist",
-                               50 + (index // len(sorted_playlist.keys())) * 25)  # 75%
+                               50 + (index / len(sorted_playlist.keys())) * 25)  # 75%
 
         # 4. Create a list of the dictionary where every track is in the right positions
         print_progress("Sorting playlist - Create a list of the sorted tracks", 75)

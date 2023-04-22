@@ -1,4 +1,4 @@
-numpy>=1.22
+numpy>=1.24.2
 python-dotenv>=0.21.0
-spotipy>=2.19.0
-art>=5.7
+spotipy==2.23.0
+art==5.9
