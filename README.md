@@ -25,11 +25,12 @@ For some guidance on how to use pm2 with python, see [this link](https://pm2.io/
 ### Requirements
 - Spotify API credentials (SPOTIPY_CLIENT_ID and SPOTIPY_CLIENT_SECRET)
     - Get these by creating an application in the [spotify developer portal](https://developer.spotify.com/dashboard/applications)
+    - Set the Redirect URI to http://localhost:8080
 - Python 3
 - Pip dependencies in the requirements.txt file
 
 ### Get started
-After getting your spotify credentials create a .env and insert the client id and client secret like this 
+After getting your spotify credentials create a .env file and insert the client id and client secret like this
 ```
 SPOTIPY_CLIENT_ID=Insert client id here
 SPOTIPY_CLIENT_SECRET=Insert client secret here
