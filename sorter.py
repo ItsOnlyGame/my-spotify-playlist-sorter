@@ -72,6 +72,8 @@ class Sorter(threading.Thread):
             # Add month and date if those do not exist
             if len(track['track']['album']['release_date'].split('-')) == 1:
                 track['track']['album']['release_date'] += '-01-01'
+            elif len(track['track']['album']['release_date'].split('-')) == 2:
+                track['track']['album']['release_date'] += '-01'
 
             if index % 10 == 0:
                 print_progress("Sorting playlist", (index // len(playlist_tracks)) * 25)
