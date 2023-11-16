@@ -76,7 +76,7 @@ class Sorter(threading.Thread):
                 track['track']['album']['release_date'] += '-01'
 
             if index % 10 == 0:
-                print_progress("Sorting playlist", (index // len(playlist_tracks)) * 25)
+                print_progress("Sorting playlist", (index / len(playlist_tracks)) * 25)
 
         # 2. Determine which artist name will be used to sort the albums with
         print_progress("Sorting playlist", 25)
@@ -113,7 +113,7 @@ class Sorter(threading.Thread):
 
             if index % 10 == 0:
                 print_progress("Sorting playlist - Create dictionary for tracks",
-                               25 + (index // len(playlist_tracks)) * 25)  # 50%
+                               25 + (index / len(playlist_tracks)) * 25)  # 50%
 
         # 3. Sort the playlist based on the previously created key values on the dictionary (sorted_playlist)
         print_progress("Sorting playlist - Sort playlist", 50)
@@ -160,7 +160,7 @@ class Sorter(threading.Thread):
 
             if index % 10 == 0:
                 print_progress("Sorting playlist - Create a list of the sorted tracks",
-                               75 + (index // len(sorted_playlist.keys())) * 25)  # 100%
+                               75 + (index / len(sorted_playlist.keys())) * 25)  # 100%
 
         print_progress("Sorting playlist - Sort completed", 100)
         return sorted_list
@@ -171,8 +171,7 @@ class Sorter(threading.Thread):
 
         progress = 0
         max_progress = len(sorted_playlist_items) - 1
-        print_progress("Applying change to playlist", (progress // max_progress) * 100, True)
-
+        print_progress("Applying change to playlist", (progress / max_progress) * 100, True)
         for j in range(0, len(sorted_playlist_items) - 1):
             if playlist_items[j]['track']['uri'] != sorted_playlist_items[j]['track']['uri']:
                 for i, t1 in enumerate(playlist_items):
@@ -192,4 +191,4 @@ class Sorter(threading.Thread):
                             playlist_items.insert(j, playlist_items.pop(i))
                         break
             progress += 1
-            print_progress("Applying change to playlist", (progress // max_progress) * 100)
+            print_progress("Applying change to playlist", (progress / max_progress) * 100)
