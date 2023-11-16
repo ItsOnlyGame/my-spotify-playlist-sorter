@@ -76,6 +76,7 @@ class App(threading.Thread):
             selected = input(">> ")
             if selected == "0":
                 self.render_sort_menu()
+                return
 
             selected_playlist = user_playlists[int(selected) - 1]
             sorter = Sorter(self.spotify, selected_playlist)
