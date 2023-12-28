@@ -55,5 +55,22 @@ def get_playlist_items(sp: spotipy.Spotify, playlist_url) -> list:
         track_items += results['items']
         playlist_page_offset += len(results['items'])
 
+    return [track['track'] for track in track_items]
+
+
+def get_album_tracks(sp: spotipy.Spotify, album_url) -> list:
+    track_items = []
+
+    album = sp.album(album_url)
+    total_tracks = album['tracks']['total']
+
+    album_page_offset = 0
+    while album_page_offset < total_tracks:
+        results = sp.album_tracks(album_url, limit=50, offset=album_page_offset)
+        track_items += results['items']
+        album_page_offset += len(results['items'])
+
+    for track in track_items:
+        track['album'] = album
 
     return track_items
