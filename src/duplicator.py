@@ -19,7 +19,7 @@ def duplicate_playlist(spotify, new_playlist_name, playlist_url, is_public):
 
     playlistItems = spotify_util.get_playlist_items(spotify, playlist_url)
     filteredPlaylistItems = filter(lambda item: item['is_local'] is False, playlistItems)
-    items = list(map(lambda item: item['track']['uri'], filteredPlaylistItems))
+    items = list(map(lambda item: item['uri'], filteredPlaylistItems))
 
     splitList = np.array_split(items, math.ceil(len(items) / 100))
     for split in splitList:
