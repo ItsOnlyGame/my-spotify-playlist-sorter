@@ -18,8 +18,7 @@ spotify-playlist-sorter.exe --sort 'playlist url here'
 ```
 
 It executes the sorting with console output.
-Recommended tools for the automation process is pm2, mostly used on node applications but can also be used to run python
-scripts.
+Recommended tools for the automation process is pm2.
 
 For some guidance on how to use pm2, see [this](https://pm2.keymetrics.io/docs/usage/quick-start/)
 
