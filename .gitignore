@@ -1,9 +1,10 @@
 __pycache__
-.cache
-.env
 .idea/
 .venv/
 
-original.txt
-sorted.txt
-automated.py
+build/
+dist/
+
+.cache
+.env
+config.json
