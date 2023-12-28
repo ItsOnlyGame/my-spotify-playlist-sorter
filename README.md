@@ -11,7 +11,7 @@ To automate this process, you may use any utility that you seem fit.
 The script has arguments that can so that it can automatically sort a playlist.
 
 ```
-python3 ./main.py -sort 'playlist url here'
+python3 ./main.py --sort 'playlist url here'
 ```
 
 It executes the sorting with console output.
@@ -39,13 +39,13 @@ SPOTIPY_CLIENT_SECRET=Insert client secret here
 Now you can start the script by running
 
 ```
-python3 ./main.py
+python3 ./src/main.py
 ```
 
 or
 
 ```
-python ./main.py
+python ./src/main.py
 ```
 
 After that follow the script instructions.
