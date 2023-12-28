@@ -6,19 +6,22 @@ Sorting of the playlist follows these rules:
 2. Albums are grouped by artist and release date. (Artist is determined from the album rather than the track)
 3. Artist groups are sorted depending on the first tracks appearance date on the playlist.
 
+I haven't created a executable for linux or macOS. 
+You can still use the python script as is if you would like.
+
 ## Automation
 To automate this process, you may use any utility that you seem fit.
 The script has arguments that can so that it can automatically sort a playlist.
 
 ```
-python3 ./main.py --sort 'playlist url here'
+spotify-playlist-sorter.exe --sort 'playlist url here'
 ```
 
 It executes the sorting with console output.
 Recommended tools for the automation process is pm2, mostly used on node applications but can also be used to run python
 scripts.
 
-For some guidance on how to use pm2 with python, see [this link](https://pm2.io/blog/2018/09/19/Manage-Python-Processes)
+For some guidance on how to use pm2, see [this](https://pm2.keymetrics.io/docs/usage/quick-start/)
 
 
 ## How to use
@@ -30,24 +33,23 @@ For some guidance on how to use pm2 with python, see [this link](https://pm2.io/
 - Pip dependencies in the requirements.txt file
 
 ### Get started
-After getting your spotify credentials create a .env file and insert the client id and client secret like this
-```
-SPOTIPY_CLIENT_ID=Insert client id here
-SPOTIPY_CLIENT_SECRET=Insert client secret here
-```
-
-Now you can start the script by running
-
-```
-python3 ./src/main.py
+After getting your spotify credentials create a config.json file and insert the client id and client secret like this
+```json
+{
+  "SPOTIPY_CLIENT_ID": "INSERT CLIENT ID HERE",
+  "SPOTIPY_CLIENT_SECRET": "INSERT CLIENT SECRET HERE"
+}
 ```
 
-or
+### Windows
+Install the latest release from [Github](https://github.com/ItsOnlyGame/my-spotify-playlist-sorter/releases).  
+Run the exe in a terminal and you're done.
 
-```
-python ./src/main.py
-```
+### Python
+Install dependencies by running this command  
+<code>pip install -r requirements.txt</code>  
 
-After that follow the script instructions.
-There is an option to clone an existing playlist. This can be used to test the script before applying any permanent
-sorting to your original playlist. 
+Start the script by running  
+<code>python ./src/main.py</code>
+
+There is an option to clone an existing playlist. This can be used to test the script before applying any permanent sorting to your original playlist. 
