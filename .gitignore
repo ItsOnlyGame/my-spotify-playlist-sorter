@@ -4,6 +4,5 @@ __pycache__
 .idea/
 .venv/
 
-original.txt
-sorted.txt
-automated.py
+build/
+dist/
