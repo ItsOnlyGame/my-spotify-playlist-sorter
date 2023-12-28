@@ -75,17 +75,16 @@ def check_env_secrets():
     Returns:
         bool: True if any required environment variables are missing, False otherwise.
     """
-    missing_env_variables = False
+    if not os.path.exists('./config.json'):
+        print("Config file doesn't exist")
+        return True
 
-    if not os.getenv('SPOTIPY_CLIENT_ID'):
-        print("Env file is missing SPOTIPY_CLIENT_ID")
-        missing_env_variables = True
+    with open('./config.json', 'r') as config:
+        data = json.load(config)
+        os.environ['SPOTIPY_CLIENT_ID'] = data['SPOTIPY_CLIENT_ID']
+        os.environ['SPOTIPY_CLIENT_SECRET'] = data['SPOTIPY_CLIENT_SECRET']
 
-    if not os.getenv('SPOTIPY_CLIENT_SECRET'):
-        print("Env file is missing SPOTIPY_CLIENT_SECRET")
-        missing_env_variables = True
-
-    return missing_env_variables
+    return False
 
 if __name__ == '__main__':
     unittest.main()

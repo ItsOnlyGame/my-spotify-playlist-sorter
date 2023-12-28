@@ -1,3 +1,5 @@
+from sys import exit
+
 from . import sort_menu, duplication_menu, state_manager
 import views.view
 
