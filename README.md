@@ -1,4 +1,5 @@
 # Spotify playlist sorter
+![image](./github/my-spotify-playlist-sorter.png)
 
 This script sorts your spotify playlist.  
 
