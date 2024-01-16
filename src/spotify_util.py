@@ -1,5 +1,6 @@
 import os
 import spotipy
+import util
 
 spotify = None
 
@@ -18,7 +19,8 @@ def get_spotify() -> spotipy.Spotify:
         client_id=os.getenv('SPOTIPY_CLIENT_ID'),
         client_secret=os.getenv('SPOTIPY_CLIENT_SECRET'),
         scope=scope_string,
-        redirect_uri='http://localhost:8080'
+        redirect_uri='http://localhost:8080',
+        open_browser=False
     )
     token = auth_manager.get_access_token()
     return spotipy.Spotify(auth=token['access_token'])
