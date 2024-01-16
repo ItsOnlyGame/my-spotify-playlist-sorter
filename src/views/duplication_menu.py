@@ -26,7 +26,6 @@ class DuplicationMenu(views.view.View):
             print("")
             print("Make playlist public (it doesn't matter because the Spotify API is broken) [y/N]")
             duplicate_is_public_input = input(">> ").lower()
-            print(duplicate_is_public_input)
 
             if duplicate_is_public_input == "n" or duplicate_is_public_input == "":
                 duplicate_is_public = False
