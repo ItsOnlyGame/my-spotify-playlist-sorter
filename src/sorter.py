@@ -141,9 +141,9 @@ def commit_sort(spotify, playlist_url, playlist_items, sorted_playlist_items):
     snapshot = None
             
     for j in range(0, len(sorted_playlist_items) - 1):
-        if playlist_items[j]['track']['uri'] != sorted_playlist_items[j]['track']['uri']:
+        if playlist_items[j]['uri'] != sorted_playlist_items[j]['uri']:
             for i, t1 in enumerate(playlist_items):
-                if t1['track']['uri'] == sorted_playlist_items[j]['track']['uri']:
+                if t1['uri'] == sorted_playlist_items[j]['uri']:
                     if snapshot is None:
                         response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j)
                         snapshot = response['snapshot_id']
