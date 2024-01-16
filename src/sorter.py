@@ -139,17 +139,21 @@ def commit_sort(spotify, playlist_url, playlist_items, sorted_playlist_items):
         sorted_playlist_items: Sorted playlist items
     """
     snapshot = None
-    for j, sorted_item in enumerate(sorted_playlist_items):
-        for i, playlist_item in enumerate(playlist_items):
-            if playlist_item['uri'] == sorted_item['uri']:
-                if snapshot is None:
-                    response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j)
-                    snapshot = response['snapshot_id']
-                else:
-                    response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j, snapshot_id=snapshot)
-                    snapshot = response['snapshot_id']
-                playlist_items.insert(j, playlist_items.pop(i))
-                break
+            
+    for j in range(0, len(sorted_playlist_items) - 1):
+        if playlist_items[j]['track']['uri'] != sorted_playlist_items[j]['track']['uri']:
+            for i, t1 in enumerate(playlist_items):
+                if t1['track']['uri'] == sorted_playlist_items[j]['track']['uri']:
+                    if snapshot is None:
+                        response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j)
+                        snapshot = response['snapshot_id']
+                        playlist_items.insert(j, playlist_items.pop(i))
+                    else:
+                        response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j, snapshot_id=snapshot)
+                        snapshot = response['snapshot_id']
+                        playlist_items.insert(j, playlist_items.pop(i))
+                    break
+
 
 def sort_playlist(spotify, playlist):
     """
