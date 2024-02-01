@@ -18,7 +18,7 @@ You can still use the python script as is if you would like.
 To automate this process, you may use any utility that you seem fit.
 The script has arguments that can so that it can automatically sort a playlist.
 
-```
+```bash
 spotify-playlist-sorter.exe --sort 'playlist url here'
 ```
 
