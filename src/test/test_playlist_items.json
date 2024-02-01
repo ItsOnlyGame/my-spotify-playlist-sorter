@@ -183,6 +183,180 @@
         "artists": [
           {
             "external_urls": {
+              "spotify": "https://open.spotify.com/artist/7Ln80lUS6He07XvHI8qqHH"
+            },
+            "href": "https://api.spotify.com/v1/artists/7Ln80lUS6He07XvHI8qqHH",
+            "id": "7Ln80lUS6He07XvHI8qqHH",
+            "name": "Arctic Monkeys",
+            "type": "artist",
+            "uri": "spotify:artist:7Ln80lUS6He07XvHI8qqHH"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/78bpIziExqiI9qztvNFlQu"
+        },
+        "href": "https://api.spotify.com/v1/albums/78bpIziExqiI9qztvNFlQu",
+        "id": "78bpIziExqiI9qztvNFlQu",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b2734ae1c4c5c45aabe565499163",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e024ae1c4c5c45aabe565499163",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d000048514ae1c4c5c45aabe565499163",
+            "width": 64
+          }
+        ],
+        "is_playable": true,
+        "name": "AM",
+        "release_date": "2013-09-09",
+        "release_date_precision": "day",
+        "total_tracks": 12,
+        "type": "album",
+        "uri": "spotify:album:78bpIziExqiI9qztvNFlQu"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/7Ln80lUS6He07XvHI8qqHH"
+          },
+          "href": "https://api.spotify.com/v1/artists/7Ln80lUS6He07XvHI8qqHH",
+          "id": "7Ln80lUS6He07XvHI8qqHH",
+          "name": "Arctic Monkeys",
+          "type": "artist",
+          "uri": "spotify:artist:7Ln80lUS6He07XvHI8qqHH"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 272394,
+      "episode": false,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "GBCEL1300362"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/5FVd6KXrgO9B3JPmC8OPst"
+      },
+      "href": "https://api.spotify.com/v1/tracks/5FVd6KXrgO9B3JPmC8OPst",
+      "id": "5FVd6KXrgO9B3JPmC8OPst",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Do I Wanna Know?",
+      "popularity": 87,
+      "preview_url": "https://p.scdn.co/mp3-preview/006bc465fe3d1c04dae93a050eca9d402a7322b8?cid=2b80cbd4a3d543378e7c07c75fde71ea",
+      "track": true,
+      "track_number": 1,
+      "type": "track",
+      "uri": "spotify:track:5FVd6KXrgO9B3JPmC8OPst"
+    },
+    "video_thumbnail": {
+      "url": null
+    }
+  },
+  {
+    "added_at": "2023-12-28T14:11:33Z",
+    "is_local": false,
+    "primary_color": null,
+    "track": {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
+              "spotify": "https://open.spotify.com/artist/3YQKmKGau1PzlVlkL1iodx"
+            },
+            "href": "https://api.spotify.com/v1/artists/3YQKmKGau1PzlVlkL1iodx",
+            "id": "3YQKmKGau1PzlVlkL1iodx",
+            "name": "Twenty One Pilots",
+            "type": "artist",
+            "uri": "spotify:artist:3YQKmKGau1PzlVlkL1iodx"
+          }
+        ],
+        "external_urls": {
+          "spotify": "https://open.spotify.com/album/3cQO7jp5S9qLBoIVtbkSM1"
+        },
+        "href": "https://api.spotify.com/v1/albums/3cQO7jp5S9qLBoIVtbkSM1",
+        "id": "3cQO7jp5S9qLBoIVtbkSM1",
+        "images": [
+          {
+            "height": 640,
+            "url": "https://i.scdn.co/image/ab67616d0000b273de03bfc2991fd5bcfde65ba3",
+            "width": 640
+          },
+          {
+            "height": 300,
+            "url": "https://i.scdn.co/image/ab67616d00001e02de03bfc2991fd5bcfde65ba3",
+            "width": 300
+          },
+          {
+            "height": 64,
+            "url": "https://i.scdn.co/image/ab67616d00004851de03bfc2991fd5bcfde65ba3",
+            "width": 64
+          }
+        ],
+        "is_playable": true,
+        "name": "Blurryface",
+        "release_date": "2015-05-15",
+        "release_date_precision": "day",
+        "total_tracks": 14,
+        "type": "album",
+        "uri": "spotify:album:3cQO7jp5S9qLBoIVtbkSM1"
+      },
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/3YQKmKGau1PzlVlkL1iodx"
+          },
+          "href": "https://api.spotify.com/v1/artists/3YQKmKGau1PzlVlkL1iodx",
+          "id": "3YQKmKGau1PzlVlkL1iodx",
+          "name": "Twenty One Pilots",
+          "type": "artist",
+          "uri": "spotify:artist:3YQKmKGau1PzlVlkL1iodx"
+        }
+      ],
+      "disc_number": 1,
+      "duration_ms": 202333,
+      "episode": false,
+      "explicit": false,
+      "external_ids": {
+        "isrc": "USAT21500597"
+      },
+      "external_urls": {
+        "spotify": "https://open.spotify.com/track/3CRDbSIZ4r5MsZ0YwxuEkn"
+      },
+      "href": "https://api.spotify.com/v1/tracks/3CRDbSIZ4r5MsZ0YwxuEkn",
+      "id": "3CRDbSIZ4r5MsZ0YwxuEkn",
+      "is_local": false,
+      "is_playable": true,
+      "name": "Stressed Out",
+      "popularity": 85,
+      "preview_url": "https://p.scdn.co/mp3-preview/d01bb6b4b9952d95d2609632474cda8e632e044d?cid=2b80cbd4a3d543378e7c07c75fde71ea",
+      "track": true,
+      "track_number": 2,
+      "type": "track",
+      "uri": "spotify:track:3CRDbSIZ4r5MsZ0YwxuEkn"
+    },
+    "video_thumbnail": {
+      "url": null
+    }
+  },
+  {
+    "added_at": "2023-12-28T14:11:33Z",
+    "is_local": false,
+    "primary_color": null,
+    "track": {
+      "album": {
+        "album_type": "album",
+        "artists": [
+          {
+            "external_urls": {
               "spotify": "https://open.spotify.com/artist/2S5hlvw4CMtMGswFtfdK15"
             },
             "href": "https://api.spotify.com/v1/artists/2S5hlvw4CMtMGswFtfdK15",
