@@ -49,13 +49,6 @@ Insert the spotify client id and secret like this:
 }
 ```
 
-### Windows
-
-Install the latest release from [Github](https://github.com/ItsOnlyGame/my-spotify-playlist-sorter/releases).  
-Run the exe in a terminal and you're done.
-
-### Python
-
 Install dependencies by running this command  
 <code>pip install -r requirements.txt</code>
 
