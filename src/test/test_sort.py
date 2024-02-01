@@ -25,8 +25,9 @@ class SortTest(unittest.TestCase):
         random.shuffle(album_tracks)
 
         # Sorting
-        sorter.fix_track_release_dates(album_tracks)
-        keyed_album = sorter.sort_tracks_into_keys(album_tracks)
+        unique_album_items = sorter.remove_duplicate_tracks(album_tracks)
+        sorter.fix_track_release_dates(unique_album_items)
+        keyed_album = sorter.sort_tracks_into_keys(unique_album_items)
         sorter.sort_albums(spotify, keyed_album)
         album_tracks = sorter.map_to_list(keyed_album)
 
@@ -34,6 +35,7 @@ class SortTest(unittest.TestCase):
         original_id_list = [track['id'] for track in original_list]
         sorted_id_list = [track['id'] for track in album_tracks]
 
+        self.maxDiff = None
         self.assertEqual(original_id_list, sorted_id_list)
 
 
@@ -52,16 +54,18 @@ class SortTest(unittest.TestCase):
             presorted_list = [item['track'] for item in presorted_list]
 
         # Sorting
-        sorter.fix_track_release_dates(playlist_items)
-        grouped_playlist = sorter.sort_tracks_into_keys(playlist_items)
+        unique_playlist_items = sorter.remove_duplicate_tracks(playlist_items)
+        sorter.fix_track_release_dates(unique_playlist_items)        
+        grouped_playlist = sorter.sort_tracks_into_keys(unique_playlist_items)
         sorter.sort_albums(spotify, grouped_playlist)
         playlist_tracks = sorter.map_to_list(grouped_playlist)
 
         # Map the lists to only contain the ids of the tracks and compare them.
-        original_id_list = [track['id'] for track in playlist_tracks]
-        sorted_id_list = [track['id'] for track in presorted_list]
+        sorted_id_list = [track['id'] for track in playlist_tracks]
+        presorted_id_list = [track['id'] for track in presorted_list]
 
-        self.assertEqual(original_id_list, sorted_id_list)
+        self.maxDiff = None
+        self.assertEqual(sorted_id_list, presorted_id_list)
 
 def check_env_secrets():
     """

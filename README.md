@@ -6,9 +6,10 @@ This script sorts your spotify playlist.
 
 Sorting of the playlist follows these rules:
 
-1. Tracks are sorted into groups of albums, that are ordered in the manner of the album.
-2. Albums are grouped by artist and release date. (Artist is determined from the album rather than the track)
-3. Artist groups are sorted depending on the first tracks appearance date on the playlist.
+1. Duplicate tracks will be removed.
+2. Tracks are sorted into groups of albums, that are ordered in the manner of the album.
+3. Albums are grouped by artist and release date. (Artist is determined from the album rather than the track)
+4. Artist groups are sorted depending on the first tracks appearance date on the playlist.
 
 I haven't created a executable for linux or macOS.
 You can still use the python script as is if you would like.
@@ -18,7 +19,7 @@ You can still use the python script as is if you would like.
 To automate this process, you may use any utility that you seem fit.
 The script has arguments that can so that it can automatically sort a playlist.
 
-```
+```bash
 spotify-playlist-sorter.exe --sort 'playlist url here'
 ```
 
@@ -48,13 +49,6 @@ Insert the spotify client id and secret like this:
   "SPOTIPY_CLIENT_SECRET": "INSERT CLIENT SECRET HERE"
 }
 ```
-
-### Windows
-
-Install the latest release from [Github](https://github.com/ItsOnlyGame/my-spotify-playlist-sorter/releases).  
-Run the exe in a terminal and you're done.
-
-### Python
 
 Install dependencies by running this command  
 <code>pip install -r requirements.txt</code>
