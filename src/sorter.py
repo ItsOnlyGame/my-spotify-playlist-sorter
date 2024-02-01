@@ -22,6 +22,17 @@ def fix_track_release_dates(tracks):
             track['album']['release_date'] += '-01'
 
 
+def remove_duplicate_tracks(tracks):
+    unique_list = []
+
+    for track in tracks:
+        if track not in unique_list:
+            unique_list.append(track)
+            
+    print(len(unique_list))
+    return unique_list
+
+
 def sort_tracks_into_keys(tracks):
     """
     Sorts the tracks from playlist_tracks into a map that is determined by the album and artist names.
@@ -101,7 +112,7 @@ def sort_albums(spotify, sorted_playlist):
 
             # Loop through the fetched spotify playlist and the dictionary.
             # Add the tracks to the sorted list when it loops to the correct position.
-            # Left over tracks will be put into the sorted list
+            # Leftover tracks will be put into the sorted list
             other = list(sorted_playlist[artist_key][album_key]).copy()
             for sp_track in album_tracks:
                 for track in sorted_playlist[artist_key][album_key]:
@@ -172,11 +183,14 @@ def sort_playlist(spotify, playlist):
     playlist_url = playlist['external_urls']['spotify']
     playlist_items = spotify_util.get_playlist_items(spotify, playlist_url)
 
+    print("Check for duplicates\n")
+    unique_playlist_items = remove_duplicate_tracks(playlist_items)
+
     print("Fixing release dates to same format\n")
-    fix_track_release_dates(playlist_items)
+    fix_track_release_dates(unique_playlist_items)
 
     print("Grouping artists, albums and tracks together\n")
-    keyed_playlist = sort_tracks_into_keys(playlist_items)
+    keyed_playlist = sort_tracks_into_keys(unique_playlist_items)
 
     print("Sorting (this might take a while depending on the size of the playlist)\n")
     sort_albums(spotify, keyed_playlist)
