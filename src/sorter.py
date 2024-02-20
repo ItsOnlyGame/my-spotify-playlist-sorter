@@ -29,7 +29,6 @@ def remove_duplicate_tracks(tracks):
         if track not in unique_list:
             unique_list.append(track)
             
-    print(len(unique_list))
     return unique_list
 
 
