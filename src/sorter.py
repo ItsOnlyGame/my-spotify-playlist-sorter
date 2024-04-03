@@ -3,14 +3,14 @@ import time
 import spotify_util
 
 
-def fix_track_release_dates(tracks):
+def fix_track_release_dates(sortable_list):
     """
     Fixes the release dates of tracks in playlist_tracks to be in the same format (YYYY-MM-DD). 
 
     Args:
         playlist_tracks (list): A list of spotify playlist tracks
     """
-    for track in tracks:
+    for track in sortable_list:
         # Add a date if one doesn't exist
         if track['album']['release_date'] is None:
             track['album']['release_date'] = '1970-01-01'
@@ -22,17 +22,17 @@ def fix_track_release_dates(tracks):
             track['album']['release_date'] += '-01'
 
 
-def remove_duplicate_tracks(tracks):
+def remove_duplicate_tracks(sortable_list):
     unique_list = []
 
-    for track in tracks:
+    for track in sortable_list:
         if track not in unique_list:
             unique_list.append(track)
             
-    return unique_list
+    sortable_list = unique_list
 
 
-def sort_tracks_into_keys(tracks):
+def sort_playlist_into_dict(tracks):
     """
     Sorts the tracks from playlist_tracks into a map that is determined by the album and artist names.
 
@@ -83,7 +83,7 @@ def sort_tracks_into_keys(tracks):
     return sorted_dict
         
 
-def sort_albums(spotify, sorted_playlist):
+def sort_albums(spotify, sortable_dict):
     """
     Go through every artist and their albums to sort the tracks into their original order.
     Also sorts the albums of artist into their release date order.
@@ -95,26 +95,26 @@ def sort_albums(spotify, sorted_playlist):
         sorted_playlist (dict): Dictionary in format of dict[artist_key][album_key]
     """
     # Go through every artist in the playlist
-    for artist_key in sorted_playlist.keys():
+    for artist_key in sortable_dict.keys():
         sorted_albums = []
 
         # Go through every album related to artist
-        for album_key in sorted_playlist[artist_key].keys():
+        for album_key in sortable_dict[artist_key].keys():
             # Put local tracks into the sorted list, no actual album to compare to.
-            if sorted_playlist[artist_key][album_key][0]['is_local'] is True:
-                sorted_albums += list(sorted_playlist[artist_key][album_key]).copy()
+            if sortable_dict[artist_key][album_key][0]['is_local'] is True:
+                sorted_albums += list(sortable_dict[artist_key][album_key]).copy()
                 continue
 
             # Sort tracks according to the actual album they are from
-            album_spotify_id = sorted_playlist[artist_key][album_key][0]['album']['id']
+            album_spotify_id = sortable_dict[artist_key][album_key][0]['album']['id']
             album_tracks = spotify.album_tracks(album_spotify_id)['items']
 
             # Loop through the fetched spotify playlist and the dictionary.
             # Add the tracks to the sorted list when it loops to the correct position.
             # Leftover tracks will be put into the sorted list
-            other = list(sorted_playlist[artist_key][album_key]).copy()
+            other = list(sortable_dict[artist_key][album_key]).copy()
             for sp_track in album_tracks:
-                for track in sorted_playlist[artist_key][album_key]:
+                for track in sortable_dict[artist_key][album_key]:
                     if sp_track['id'] == track['id']:
                         sorted_albums.append(track)
                         other.remove(track)
@@ -122,10 +122,10 @@ def sort_albums(spotify, sorted_playlist):
 
         # Sort the tracks based on albums release date and insert the sorted list to the dictionary
         sorted_albums.sort(key=lambda i: time.strptime(i['album']['release_date'], '%Y-%m-%d'))
-        sorted_playlist[artist_key] = sorted_albums
+        sortable_dict[artist_key] = sorted_albums
 
 
-def map_to_list(sorted_playlist: dict):
+def playlist_dict_to_list(sorted_playlist: dict):
     """ From grouped dict to a list
 
     Args:
@@ -180,25 +180,27 @@ def sort_playlist(spotify, playlist):
 
     print("Fetching playlist items\n")
     playlist_url = playlist['external_urls']['spotify']
-    playlist_items = spotify_util.get_playlist_items(spotify, playlist_url)
+    
+    original_playlist = spotify_util.get_playlist_items(spotify, playlist_url)
+    sortable_list = original_playlist.copy()
 
     print("Check for duplicates\n")
-    unique_playlist_items = remove_duplicate_tracks(playlist_items)
+    remove_duplicate_tracks(sortable_list)
 
     print("Fixing release dates to same format\n")
-    fix_track_release_dates(unique_playlist_items)
+    fix_track_release_dates(sortable_list)
 
     print("Grouping artists, albums and tracks together\n")
-    keyed_playlist = sort_tracks_into_keys(unique_playlist_items)
+    sortable_dict = sort_playlist_into_dict(sortable_list)
 
     print("Sorting (this might take a while depending on the size of the playlist)\n")
-    sort_albums(spotify, keyed_playlist)
+    sort_albums(spotify, sortable_dict)
 
     print("Creating a list of sorted tracks\n")
-    playlist_items_list = map_to_list(keyed_playlist)
+    sorted_playlist = playlist_dict_to_list(sortable_dict)
 
     print("Committing changes to playlist\n")
-    commit_sort(spotify, playlist_url, playlist_items, playlist_items_list)
+    commit_sort(spotify, playlist_url, original_playlist, sorted_playlist)
 
     timer = (time.time() - start_time)
     print(f"Done (took {timer} seconds)")
