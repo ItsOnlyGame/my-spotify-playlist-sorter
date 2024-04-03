@@ -138,7 +138,7 @@ def playlist_dict_to_list(sorted_playlist: dict):
     return sorted_list
 
 
-def commit_sort(spotify, playlist_url, playlist_items, sorted_playlist_items):
+def commit_sort(spotify, playlist_url, original_playlist, sorted_playlist):
     """
     Commits changes from sorted_playlist_items into playlist identified by playlist_url.
 
@@ -150,18 +150,18 @@ def commit_sort(spotify, playlist_url, playlist_items, sorted_playlist_items):
     """
     snapshot = None
             
-    for j in range(0, len(sorted_playlist_items) - 1):
-        if playlist_items[j]['uri'] != sorted_playlist_items[j]['uri']:
-            for i, t1 in enumerate(playlist_items):
-                if t1['uri'] == sorted_playlist_items[j]['uri']:
+    for j in range(0, len(sorted_playlist) - 1):
+        if original_playlist[j]['uri'] != sorted_playlist[j]['uri']:
+            for i, t1 in enumerate(original_playlist):
+                if t1['uri'] == sorted_playlist[j]['uri']:
                     if snapshot is None:
                         response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j)
                         snapshot = response['snapshot_id']
-                        playlist_items.insert(j, playlist_items.pop(i))
+                        original_playlist.insert(j, original_playlist.pop(i))
                     else:
                         response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j, snapshot_id=snapshot)
                         snapshot = response['snapshot_id']
-                        playlist_items.insert(j, playlist_items.pop(i))
+                        original_playlist.insert(j, original_playlist.pop(i))
                     break
 
 
