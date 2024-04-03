@@ -1,6 +1,5 @@
 import os
 import spotipy
-import util
 
 spotify = None
 
@@ -57,7 +56,7 @@ def get_playlist_items(sp: spotipy.Spotify, playlist_url) -> list:
         track_items += results['items']
         playlist_page_offset += len(results['items'])
 
-    return [track['track'] for track in track_items]
+    return [track['track'] for track in track_items if track['track'] is not None]
 
 
 def get_album_tracks(sp: spotipy.Spotify, album_url) -> list:
