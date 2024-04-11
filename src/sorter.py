@@ -1,3 +1,4 @@
+from sys import argv
 import time
 
 import spotify_util
@@ -22,14 +23,36 @@ def fix_track_release_dates(sortable_list):
             track['album']['release_date'] += '-01'
 
 
-def remove_duplicate_tracks(sortable_list):
-    unique_list = []
+def remove_duplicate_tracks(spotify, playlist_url):
+    """
+    Removes duplicate tracks from the playlist.
 
-    for track in sortable_list:
-        if track not in unique_list:
-            unique_list.append(track)
-            
-    sortable_list = unique_list
+    Args:
+        spotify (list): Spotify instance
+        playlist_url (list): Playlist URL
+        original_playlist (list): List of spotify tracks in a playlist
+    """
+    original_playlist = spotify_util.get_playlist_items(spotify, playlist_url)
+    
+    unique_track_uris = set()    
+    tracks_to_trash = []
+    
+    for index, track in enumerate(original_playlist):
+        if track is None:
+            continue
+        
+        track_uri = track['uri']
+        if track_uri not in unique_track_uris:
+            unique_track_uris.add(track_uri)
+        else:
+            tracks_to_trash.append({
+                "uri": track_uri,
+                "positions": [index]
+            })
+
+    if "--debug" not in argv:
+        response = spotify.playlist_remove_specific_occurrences_of_items(playlist_url, tracks_to_trash)
+        return response['snapshot_id']
 
 
 def sort_playlist_into_dict(sortable_list):
@@ -100,6 +123,11 @@ def sort_albums(spotify, sortable_dict):
 
         # Go through every album related to artist
         for album_key in sortable_dict[artist_key].keys():
+            # Put invalid tracks into the sorted list, nothing to compare to.
+            if artist_key == "invalid" or album_key == "invalid":
+                sorted_albums += list(sortable_dict[artist_key][album_key]).copy()
+                continue
+            
             # Put local tracks into the sorted list, no actual album to compare to.
             if sortable_dict[artist_key][album_key][0]['is_local'] is True:
                 sorted_albums += list(sortable_dict[artist_key][album_key]).copy()
@@ -138,7 +166,7 @@ def playlist_dict_to_list(sorted_playlist: dict):
     return sorted_list
 
 
-def commit_sort(spotify, playlist_url, original_playlist, sorted_playlist):
+def commit_sort(spotify, playlist_url, original_playlist, sorted_playlist, snapshot_id=None):
     """
     Commits changes from sorted_playlist_items into playlist identified by playlist_url.
 
@@ -147,23 +175,36 @@ def commit_sort(spotify, playlist_url, original_playlist, sorted_playlist):
         playlist_url: URL of the playlist that is going to be sorted
         original_playlist: Original playlist items
         sorted_playlist: Sorted playlist items
-    """
-    snapshot = None
-            
+    """                
     for j in range(0, len(sorted_playlist) - 1):
-        if original_playlist[j]['uri'] != sorted_playlist[j]['uri']:
-            for i, t1 in enumerate(original_playlist):
-                if t1['uri'] == sorted_playlist[j]['uri']:
-                    if snapshot is None:
-                        response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j)
-                        snapshot = response['snapshot_id']
-                        original_playlist.insert(j, original_playlist.pop(i))
-                    else:
-                        response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j, snapshot_id=snapshot)
-                        snapshot = response['snapshot_id']
-                        original_playlist.insert(j, original_playlist.pop(i))
-                    break
+        if original_playlist[j]['uri'] == sorted_playlist[j]['uri']:
+            continue
+        
+        for i, t1 in enumerate(original_playlist):
+            if t1['uri'] is not sorted_playlist[j]['uri']:
+                continue
+            
+            if snapshot_id is None:
+                response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j)
+                snapshot_id = response['snapshot_id']
+                original_playlist.insert(j, original_playlist.pop(i))
+            else:
+                response = spotify.playlist_reorder_items(playlist_url, range_start=i, insert_before=j, snapshot_id=snapshot_id)
+                snapshot_id = response['snapshot_id']
+                original_playlist.insert(j, original_playlist.pop(i))
+            break
 
+
+def log_list(sorted_playlist):
+    """
+    Print the playlist to the console
+
+    Args:
+        sorted_playlist: Sorted playlist items
+    """            
+    for i in range(0, len(sorted_playlist)):
+        print(f"{i + 1}. {sorted_playlist[i]['artists'][0]['name']} - {sorted_playlist[i]['name']}")
+    
 
 def sort_playlist(spotify, playlist):
     """
@@ -181,11 +222,11 @@ def sort_playlist(spotify, playlist):
     print("Fetching playlist items\n")
     playlist_url = playlist['external_urls']['spotify']
     
+    print("Remove duplicates from playlist\n")
+    playlist_snapshot_id = remove_duplicate_tracks(spotify, playlist_url)
+
     original_playlist = spotify_util.get_playlist_items(spotify, playlist_url)
     sortable_list = original_playlist.copy()
-
-    print("Check for duplicates\n")
-    remove_duplicate_tracks(sortable_list)
 
     print("Fixing release dates to same format\n")
     fix_track_release_dates(sortable_list)
@@ -199,8 +240,12 @@ def sort_playlist(spotify, playlist):
     print("Creating a list of sorted tracks\n")
     sorted_playlist = playlist_dict_to_list(sortable_dict)
 
-    print("Committing changes to playlist\n")
-    commit_sort(spotify, playlist_url, original_playlist, sorted_playlist)
+    if "--debug" not in argv:
+        print("Committing changes to playlist\n")
+        commit_sort(spotify, playlist_url, original_playlist, sorted_playlist, playlist_snapshot_id)
+    else:
+        print("Log playlist\n")
+        log_list(sorted_playlist)
 
     timer = (time.time() - start_time)
     print(f"Done (took {timer} seconds)")

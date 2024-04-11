@@ -56,7 +56,30 @@ def get_playlist_items(sp: spotipy.Spotify, playlist_url) -> list:
         track_items += results['items']
         playlist_page_offset += len(results['items'])
 
-    return [track['track'] for track in track_items if track['track'] is not None]
+    track_list = []
+
+    for index, track in enumerate(track_items):
+        if track['track'] is None:
+            track['track'] = {
+                "is_local": False,
+                "album": {
+                    "album_type": "album",
+                    "name": "invalid",
+                    "release_date": "1970-01-01",
+                    "artists": [
+                        { "name": "invalid" }
+                    ],
+                },
+                "artists": [
+                    { "name": "invalid" }
+                ],
+                "uri": f"invalid-{index}",
+                "name": "invalid"
+            }
+            
+        track_list.append(track['track'])
+
+    return [track['track'] for track in track_items]
 
 
 def get_album_tracks(sp: spotipy.Spotify, album_url) -> list:
