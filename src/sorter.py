@@ -123,6 +123,11 @@ def sort_albums(spotify, sortable_dict):
 
         # Go through every album related to artist
         for album_key in sortable_dict[artist_key].keys():
+            # Put invalid tracks into the sorted list, nothing to compare to.
+            if artist_key == "invalid" or album_key == "invalid":
+                sorted_albums += list(sortable_dict[artist_key][album_key]).copy()
+                continue
+            
             # Put local tracks into the sorted list, no actual album to compare to.
             if sortable_dict[artist_key][album_key][0]['is_local'] is True:
                 sorted_albums += list(sortable_dict[artist_key][album_key]).copy()
@@ -197,12 +202,9 @@ def log_list(sorted_playlist):
     Args:
         sorted_playlist: Sorted playlist items
     """            
-    for i in range(0, len(sorted_playlist) - 1):
-        if sorted_playlist[i] is None:
-            print(f"{i + 1}. invalid")
-            continue
-        
+    for i in range(0, len(sorted_playlist)):
         print(f"{i + 1}. {sorted_playlist[i]['artists'][0]['name']} - {sorted_playlist[i]['name']}")
+    
 
 def sort_playlist(spotify, playlist):
     """
