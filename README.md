@@ -11,9 +11,6 @@ Sorting of the playlist follows these rules:
 3. Albums are grouped by artist and release date. (Artist is determined from the album rather than the track)
 4. Artist groups are sorted depending on the first tracks appearance date on the playlist.
 
-I haven't created a executable for linux or macOS.
-You can still use the python script as is if you would like.
-
 ## Automation
 
 To automate this process, you may use any utility that you seem fit.
