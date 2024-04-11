@@ -165,6 +165,20 @@ def commit_sort(spotify, playlist_url, original_playlist, sorted_playlist):
                     break
 
 
+def log_list(sorted_playlist):
+    """
+    Print the playlist to the console
+
+    Args:
+        sorted_playlist: Sorted playlist items
+    """            
+    for i in range(0, len(sorted_playlist) - 1):
+        if sorted_playlist[i] is None:
+            print(f"{i + 1}. invalid")
+            continue
+        
+        print(f"{i + 1}. {sorted_playlist[i]['artists'][0]['name']} - {sorted_playlist[i]['name']}")
+
 def sort_playlist(spotify, playlist):
     """
     ### Sorts the spotify playlist
@@ -199,8 +213,12 @@ def sort_playlist(spotify, playlist):
     print("Creating a list of sorted tracks\n")
     sorted_playlist = playlist_dict_to_list(sortable_dict)
 
-    print("Committing changes to playlist\n")
-    commit_sort(spotify, playlist_url, original_playlist, sorted_playlist)
+    if "--debug" not in argv:
+        print("Committing changes to playlist\n")
+        commit_sort(spotify, playlist_url, original_playlist, sorted_playlist)
+    else:
+        print("Log playlist\n")
+        log_list(sorted_playlist)
 
     timer = (time.time() - start_time)
     print(f"Done (took {timer} seconds)")

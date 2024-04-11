@@ -1,4 +1,5 @@
-from os import system, name
+from os import system, name, getenv
+from sys import argv
 from art import tprint
 
 class View:
@@ -6,7 +7,8 @@ class View:
         pass
 
     def get_input(self, text="Spotify Playlist Sorter"):
-        self.clear()
+        if "--debug" not in argv:
+            self.clear()
         tprint(text)
 
     def clear(self):
