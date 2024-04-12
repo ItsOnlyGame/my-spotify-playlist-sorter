@@ -41,13 +41,16 @@ if __name__ == '__main__':
 
     if check_env_secrets():
         exit()
-
-    if len(sys.argv) >= 2 and sys.argv[1] == "--sort":
-        playlist_url = sys.argv[2]
-
-        spotify = spotify_util.get_spotify()
-        playlist = spotify_util.get_playlist(spotify, playlist_url)
-        sorter.sort_playlist(spotify, playlist)
+        
+    
+    if "--sort" in sys.argv and len(sys.argv) >= 3:
+        argv_index = sys.argv.index("--sort")
+        playlists = sys.argv[argv_index + 1]
+        
+        for playlist_url in playlists.split(','):
+            spotify = spotify_util.get_spotify()
+            playlist = spotify_util.get_playlist(spotify, playlist_url)
+            sorter.sort_playlist(spotify, playlist)
     else:
         # app = App()
         while True:
