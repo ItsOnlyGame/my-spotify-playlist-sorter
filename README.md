@@ -17,7 +17,11 @@ To automate this process, you may use any utility that you seem fit.
 The script has arguments that can so that it can automatically sort a playlist.
 
 ```bash
-python ./src/main.py --sort 'playlist url here'
+# Single playlist
+python ./src/main.py --sort "playlist url here"
+
+# Multiple playlists
+python ./src/main.py --sort "playlist url here","another playlist url"
 ```
 
 It executes the sorting with console output.
@@ -29,9 +33,9 @@ For some guidance on how to use pm2, see [this](https://pm2.keymetrics.io/docs/u
 
 ### Requirements
 
-- Spotify API credentials (SPOTIPY_CLIENT_ID and SPOTIPY_CLIENT_SECRET) 
+- Spotify API credentials (SPOTIPY_CLIENT_ID and SPOTIPY_CLIENT_SECRET)
   - Get these by creating an application in the [spotify developer portal](https://developer.spotify.com/dashboard/applications)
-  - Set the Redirect URI to http://localhost:8080
+  - Set the Redirect URI to <http://localhost:8080>
 - Python 3
 - Pip dependencies in the requirements.txt file
 
@@ -56,3 +60,9 @@ Start the script by running
 ---
 
 There is an option to clone an existing playlist. This can be used to test the script before applying any permanent sorting to your original playlist.
+
+You can also run the python script with --debug argument. This will not apply any changes to the playlist, and will instead print out the sorted playlist to terminal.
+
+```bash
+python ./src/main.py --debug
+```
