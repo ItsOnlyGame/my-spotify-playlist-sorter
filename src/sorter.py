@@ -50,7 +50,7 @@ def remove_duplicate_tracks(spotify, playlist_url):
                 "positions": [index]
             })
 
-    if "--debug" not in argv:
+    if "--debug" not in argv and len(tracks_to_trash) > 0:
         response = spotify.playlist_remove_specific_occurrences_of_items(playlist_url, tracks_to_trash)
         return response['snapshot_id']
 
